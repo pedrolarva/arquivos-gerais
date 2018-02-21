@@ -1,0 +1,22 @@
+   <IfModule mod_deflate.c>
+        SetOutputFilter DEFLATE
+        SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+        SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
+        <IfModule mod_headers.c>
+                Header append Vary User-Agent
+        </IfModule>
+   </IfModule>
+
+
+   <VirtualHost *:80>
+      DocumentRoot /var/tmp/dashbox/release/4.21.0
+      SetEnv DASHBOX_CONF /var/opt/dashbox/config.json
+
+      <Directory /var/tmp/dashbox>
+          AllowOverride All
+          Require all granted
+          DirectoryIndex index.html index.cgi index.php
+          Order Allow,Deny
+          Allow from all
+      </Directory>
+   </VirtualHost>
